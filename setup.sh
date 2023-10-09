@@ -13,10 +13,10 @@ fi
 RELNAME=frp_"$FRPVER"_linux_amd64
 wget https://github.com/fatedier/frp/releases/download/v"$FRPVER"/"$RELNAME".tar.gz
 tar -xvf "$RELNAME".tar.gz
-mv "$RELNAME"/frpc "$HERE"/modules/99frpc/frpc
-chmod +x /root/frpc
 rm "$RELNAME".tar.gz
+mv "$RELNAME"/frpc "$HERE"/modules/99frpc/frpc
 rm -r "$RELNAME"
+chmod +x "$HERE"/modules/99frpc/frpc
 
 # Ask the user for an FRPC config file and add it to the module
 FRPC_INI="$1"
