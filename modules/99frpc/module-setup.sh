@@ -11,11 +11,11 @@ depends() {
 
 install() {
   # Register the FRPC start and stop scripts to run at appropriate times
-  inst_hook pre-udev 99 "$moddir/frpc-start.sh"
-  inst_hook pre-pivot 05 "$moddir/frpc-stop.sh"
+  inst_hook initqueue 20 "$moddir/frpc-start.sh"
+  inst_hook cleanup 05 "$moddir/frpc-stop.sh"
 
-  # Make pkill available for frpc-stop.sh
-  dracut_install pkill
+  # Make some packages available for the above scripts
+  dracut_install pkill tee
 
   # Ensure FRPC along with a pre-defined config file (with hardcoded path) are available in initramfs
   inst "$moddir"/frpc /root/frpc
