@@ -8,6 +8,7 @@ trap "cd \"$CURR_DIR\"; rm -rf \"$TEMP_DIR\"" EXIT
 # Atomic distros have a read-only `/usr` directory so the module must be layered in as an RPM
 # We do this in a toolbox since there's no need to layer in rpmdevtools for this one-time use
 
+if [ -n "$1" ]; then TIMESTAMP="$1"; fi
 if [ -z "$TIMESTAMP" ]; then TIMESTAMP="$(date +%Y%m%d%H%M%S)"; fi
 sed "s/0\.0\.1/0.0.$TIMESTAMP/g" "$SCRIPT_DIR"/my_dracut_frpc.spec.template > "$SCRIPT_DIR"/my_dracut_frpc.spec 
 
