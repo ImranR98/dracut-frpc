@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+CURR_DIR="$(pwd)"
+TEMP_DIR="$(mktemp -d)"
+trap "cd \"$CURR_DIR\"; rm -rf \"$TEMP_DIR\"" EXIT
+
+# Atomic distros have a read-only `/usr` directory so the module must be layered in as an RPM
+# We do this in a toolbox since there's no need to layer in rpmdevtools for this one-time use
+
+sudo dnf install rpmdevtools rpmlint -y
+
+rpmdev-setuptree
+
+rm -rf ~/rpmbuild/SOURCES/*
+
+mkdir -p "$TEMP_DIR"/my_dracut_frpc-0.0.1
+cp "$SCRIPT_DIR"/../modules/99frpc/* "$TEMP_DIR"/my_dracut_frpc-0.0.1
+cd "$TEMP_DIR"
+tar --create --file ~/rpmbuild/SOURCES/my_dracut_frpc-0.0.1.tar.gz my_dracut_frpc-0.0.1
+cp "$SCRIPT_DIR"/../rpm_files/my_dracut_frpc.spec ~/rpmbuild/SPECS/
+
+rpmlint ~/rpmbuild/SPECS/my_dracut_frpc.spec
+rpmbuild -ba ~/rpmbuild/SPECS/my_dracut_frpc.spec

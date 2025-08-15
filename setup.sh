@@ -29,20 +29,34 @@ while [ -z "$FRPC_INI" ]; do
 done
 cp "$FRPC_INI" "$HERE"/modules/99frpc/frpc.ini
 
-# Add the module to dracut
-MODULE_DIR=/usr/lib/dracut/modules.d/99frpc
-if [ -d "$MODULE_DIR" ]; then $SUDO_COMMAND rm -r "$MODULE_DIR"; fi
-$SUDO_COMMAND mkdir -p "$MODULE_DIR"
-$SUDO_COMMAND cp "$HERE"/modules/99frpc/* "$MODULE_DIR"
-$SUDO_COMMAND chmod +x "$MODULE_DIR"/*.sh
+if ! which rpm-ostree 2>&1 >/dev/null; then
+    # Add the module to dracut
+    MODULE_DIR=/usr/lib/dracut/modules.d/99frpc
+    if [ -d "$MODULE_DIR" ]; then $SUDO_COMMAND rm -r "$MODULE_DIR"; fi
+    $SUDO_COMMAND mkdir -p "$MODULE_DIR"
+    $SUDO_COMMAND cp "$HERE"/modules/99frpc/* "$MODULE_DIR"
+    $SUDO_COMMAND chmod +x "$MODULE_DIR"/*.sh
 
-# Build the module
-echo "About to build the module. Press Enter to continue."
-read anything
-if [ "$SUDO_COMMAND" == "run0" ]; then
+    # Build the module
+    echo "About to build the module. Press Enter to continue."
+    read anything
     $SUDO_COMMAND dracut -f -v
 else
     rpm-ostree initramfs --enable --arg "--force"
+    if [ "$RUN_TOOLBOX_STEPS_WITH_ASSUMPTIONS" == true ]; then
+        toolbox run "$HERE"/rpm_files/generateModuleRPM.sh
+        rpm-ostree --apply-live --assumeyes ~/rpmbuild/RPMS/noarch/my_dracut_frpc-0.0.1-1.fc42.noarch.rpm
+    else
+        read -p "You are on an rpm-ostree based distro, so installation cannot complete without some manual steps. 
+Please do the following:
+1. Create a Fedora container using toolbox.
+2. Run rpm_files/generateModuleRPM.sh in the container.
+3. Run rpm-ostree install --apply-live --assumeyes ~/rpmbuild/RPMS/noarch/my_dracut_frpc-0.0.1-1.fc42.noarch.rpm
+
+Press Enter to continue." ANYTHING
+        exit
+    fi
+
 fi
 
 # Conclusion
