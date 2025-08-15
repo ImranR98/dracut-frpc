@@ -1,2 +1,3 @@
 modules/99frpc/frpc
 modules/99frpc/frpc.ini
+rpm_files/my_dracut_frpc.spec

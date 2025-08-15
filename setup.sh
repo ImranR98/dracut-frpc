@@ -43,15 +43,16 @@ if ! which rpm-ostree 2>&1 >/dev/null; then
     $SUDO_COMMAND dracut -f -v
 else
     rpm-ostree initramfs --enable --arg "--force"
+    export TIMESTAMP="$(date +%Y%m%d%H%M%S)"
     if [ "$RUN_TOOLBOX_STEPS_WITH_ASSUMPTIONS" == true ]; then
-        toolbox run "$HERE"/rpm_files/generateModuleRPM.sh
-        rpm-ostree install --apply-live --assumeyes ~/rpmbuild/RPMS/x86_64/my_dracut_frpc-0.0.1-1.fc42.x86_64.rpm
+        toolbox run "$HERE"/rpm_files/generateModuleRPM.sh "$TIMESTAMP"
+        rpm-ostree install --apply-live --assumeyes --replace ~/rpmbuild/RPMS/x86_64/my_dracut_frpc-0.0.$TIMESTAMP-1.fc42.x86_64.rpm
     else
         read -p "You are on an rpm-ostree based distro, so installation cannot complete without some manual steps. 
 Please do the following:
 1. Create a Fedora container using toolbox.
-2. Run rpm_files/generateModuleRPM.sh in the container.
-3. Run rpm-ostree install --apply-live --assumeyes ~/rpmbuild/RPMS/x86_64/my_dracut_frpc-0.0.1-1.fc42.x86_64.rpm
+2. Run 'rpm_files/generateModuleRPM.sh $TIMESTAMP' in the container.
+3. Run 'rpm-ostree install --apply-live --assumeyes --replace ~/rpmbuild/RPMS/x86_64/my_dracut_frpc-0.0.$TIMESTAMP-1.fc42.x86_64.rpm'
 
 Press Enter to continue." ANYTHING
         exit
