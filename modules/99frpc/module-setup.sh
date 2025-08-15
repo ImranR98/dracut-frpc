@@ -18,6 +18,6 @@ install() {
   dracut_install pkill tee
 
   # Ensure FRPC along with a pre-defined config file (with hardcoded path) are available in initramfs
-  inst "$moddir"/frpc /root/frpc
-  inst "$moddir"/frpc.ini /root/frpc.ini
+  inst "$moddir"/frpc /etc/frpc
+  inst "$moddir"/frpc.ini /etc/frpc.ini
 }

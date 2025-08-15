@@ -1,3 +1,3 @@
 #!/usr/bin/sh
 
-/root/frpc -c /root/frpc.ini 2>&1 | tee /root/frpc.log &
+/etc/frpc -c /etc/frpc.ini 2>&1 | tee /etc/frpc.log &
