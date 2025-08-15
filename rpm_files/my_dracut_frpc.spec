@@ -1,8 +1,10 @@
+%define debug_package %{nil}
+
 Name:           my_dracut_frpc
 Version:        0.0.1
 Release:        1%{?dist}
 Summary:        Runs FRPC in the pre-boot environment (with my hardcoded credentials)
-BuildArch:      noarch
+ExclusiveArch:      x86_64
 
 License:        None
 Source0:        ./%{name}-%{version}.tar.gz
@@ -24,6 +26,7 @@ chmod +x $RPM_BUILD_ROOT/usr/lib/dracut/modules.d/99frpc/*.sh
 /usr/lib/dracut/modules.d/99frpc/frpc-start.sh
 /usr/lib/dracut/modules.d/99frpc/frpc-stop.sh
 /usr/lib/dracut/modules.d/99frpc/frpc.ini
+/usr/lib/dracut/modules.d/99frpc/frpc
 
 %changelog
 * Fri Aug 15 2025 Imran Remtulla <contact@imranr.dev>
