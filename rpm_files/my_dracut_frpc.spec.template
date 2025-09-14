@@ -25,7 +25,7 @@ chmod +x $RPM_BUILD_ROOT/usr/lib/dracut/modules.d/99frpc/*.sh
 /usr/lib/dracut/modules.d/99frpc/module-setup.sh
 /usr/lib/dracut/modules.d/99frpc/frpc-start.sh
 /usr/lib/dracut/modules.d/99frpc/frpc-stop.sh
-/usr/lib/dracut/modules.d/99frpc/frpc.ini
+/usr/lib/dracut/modules.d/99frpc/frpc.toml
 /usr/lib/dracut/modules.d/99frpc/frpc
 
 %changelog

@@ -24,10 +24,10 @@ chmod +x "$HERE"/modules/99frpc/frpc
 # Ask the user for an FRPC config file and add it to the module
 FRPC_INI="$1"
 while [ -z "$FRPC_INI" ]; do
-    echo "Enter the location of frpc.ini: "
+    echo "Enter the location of frpc.toml: "
     read FRPC_INI
 done
-cp "$FRPC_INI" "$HERE"/modules/99frpc/frpc.ini
+cp "$FRPC_INI" "$HERE"/modules/99frpc/frpc.toml
 
 if ! which rpm-ostree 2>&1 >/dev/null; then
     # Add the module to dracut

@@ -19,5 +19,5 @@ install() {
 
   # Ensure FRPC along with a pre-defined config file (with hardcoded path) are available in initramfs
   inst "$moddir"/frpc /etc/frpc
-  inst "$moddir"/frpc.ini /etc/frpc.ini
+  inst "$moddir"/frpc.toml /etc/frpc.toml
 }
