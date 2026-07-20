@@ -5,7 +5,7 @@ set -e
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 SUDO_COMMAND="sudo"
-if which rpm-ostree; then SUDO_COMMAND="run0"; fi # Support secureblue
+if command -v rpm-ostree >/dev/null 2>&1; then SUDO_COMMAND="run0"; fi # Support secureblue
 
 # Download the latest version of FRPC and add it to the module
 FRPVER="$(curl -s https://api.github.com/repos/fatedier/frp/releases/latest | grep -oE 'tag/.*' | grep -oE '[0-9]+(\.[0-9]+)*')"
@@ -53,7 +53,7 @@ if [ -n "$KEY_FILE" ]; then
     cp "$KEY_FILE" "$HERE"/modules/99frpc/client.key
 fi
 
-if ! which rpm-ostree 2>&1 >/dev/null; then
+if ! command -v rpm-ostree >/dev/null 2>&1; then
     # Add the module to dracut
     MODULE_DIR=/usr/lib/dracut/modules.d/99frpc
     if [ -d "$MODULE_DIR" ]; then $SUDO_COMMAND rm -r "$MODULE_DIR"; fi
