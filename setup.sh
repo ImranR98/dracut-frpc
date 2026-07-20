@@ -21,13 +21,37 @@ mv "$RELNAME"/frpc "$HERE"/modules/99frpc/frpc
 rm -r "$RELNAME"
 chmod +x "$HERE"/modules/99frpc/frpc
 
+# Parse CLI arguments
+CERT_FILE=""
+KEY_FILE=""
+CA_FILE=""
+FRPC_INI=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --cert) CERT_FILE="$2"; shift 2 ;;
+        --key)  KEY_FILE="$2"; shift 2 ;;
+        --ca)   CA_FILE="$2"; shift 2 ;;
+        *)      FRPC_INI="$1"; shift ;;
+    esac
+done
+
 # Ask the user for an FRPC config file and add it to the module
-FRPC_INI="$1"
 while [ -z "$FRPC_INI" ]; do
     echo "Enter the location of frpc.toml: "
     read FRPC_INI
 done
 cp "$FRPC_INI" "$HERE"/modules/99frpc/frpc.toml
+
+# Copy TLS certificates into the module (for mTLS auth)
+if [ -n "$CA_FILE" ]; then
+    cp "$CA_FILE" "$HERE"/modules/99frpc/ca.crt
+fi
+if [ -n "$CERT_FILE" ]; then
+    cp "$CERT_FILE" "$HERE"/modules/99frpc/client.crt
+fi
+if [ -n "$KEY_FILE" ]; then
+    cp "$KEY_FILE" "$HERE"/modules/99frpc/client.key
+fi
 
 if ! which rpm-ostree 2>&1 >/dev/null; then
     # Add the module to dracut

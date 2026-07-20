@@ -20,4 +20,16 @@ install() {
   # Ensure FRPC along with a pre-defined config file (with hardcoded path) are available in initramfs
   inst "$moddir"/frpc /etc/frpc
   inst "$moddir"/frpc.toml /etc/frpc.toml
+
+  # Install TLS certificates for mTLS authentication (if present)
+  mkdir -p /etc/frp
+  if [ -f "$moddir"/ca.crt ]; then
+    inst "$moddir"/ca.crt /etc/frp/ca.crt
+  fi
+  if [ -f "$moddir"/client.crt ]; then
+    inst "$moddir"/client.crt /etc/frp/client.crt
+  fi
+  if [ -f "$moddir"/client.key ]; then
+    inst "$moddir"/client.key /etc/frp/client.key
+  fi
 }
