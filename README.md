@@ -1,4 +1,8 @@
-# dracut-frpc
+# dracut-frpc [ARCHIVED]
+
+> **This repository is archived.** It has been replaced by **[dracut-remote-luks-unlock](https://github.com/ImranR98/dracut-remote-luks-unlock)**, which combines FRP, WiFi networking, and SSH for a complete remote LUKS unlock solution. Use `dracut-remote-luks-unlock/setup.sh` instead.
+
+---
 
 Run an [FRP](https://github.com/fatedier/frp) client during system boot using [Dracut](https://en.wikipedia.org/wiki/Dracut_(software)).
 
